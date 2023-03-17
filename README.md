@@ -5,7 +5,7 @@ Profiles REST API course code
 
 --------------------
 
-## Commands
+## Initial Commands
 
 ```sh
     vagrant init ubuntu/bionic64
@@ -87,6 +87,8 @@ Comenzaremos activando algunas apps que necesitaremos para este proyecto:
 **profiles_api**
 : por ultimo agregamos nuestra aplicacion.
 
+--------------------
+
 ### Como setear un modelo custom
 
 Dentro de nuestro archivo settings.py, agregamos la siguiente linea
@@ -102,8 +104,6 @@ De esta manera se configura un modelo en django
 --------------------
 
 ## Models
-
---------------------
 
 En este archivo se crean los modelos que utilizara nuestra aplicacion.
 
@@ -174,6 +174,8 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
 ```
 
+--------------------
+
 ## Migrations
 
 La manera en la que django maneja la base de datos es creando un archivo *migration* que contenga todos los pasos requeridos para que nuestra base de datos matchee con nuestros modelos. Por lo cual, cada vez que creamos o modificamos un modelo, debemos crear o actualizar el archivo migration
@@ -192,3 +194,31 @@ Para correr todos los migrations de nuestro proyecto utilizamos el siguiente com
 ```sh
     python manage.py migrate
 ```
+
+--------------------
+
+## Crear Superuser utilizando Django CLI
+
+Con el siguiente comando crearemos un superusuario para django que pueda ver, administrar, modificar, etc., la base de datos
+
+```sh
+    python manage.py createsuperuser
+```
+
+--------------------
+
+## Como habilitar Django Admin
+
+Dentro de admin.py, debemos agregar la siguiente linea dependiendo la cantidad de modelos que tenga nuestra app:
+
+```py
+    from django.contrib import admin
+
+    from profiles_api import models
+
+    admin.site.register(models.UserProfile)
+```
+
+--------------------
+
+## Como testear nuestra app

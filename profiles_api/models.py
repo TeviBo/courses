@@ -64,8 +64,9 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
     objects = UserProfileManager()
 
-    # Cuando se autentiquen, mediante este metodo indicamos que en lugar de utilizar el nombre de la
-    # persona, utilizara el campo email como usuario
+    """ Cuando se autentiquen, mediante este metodo indicamos que
+    en lugar de utilizar el nombre de la persona,
+    utilizara el campo email como usuario """
     USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = ["name"]
