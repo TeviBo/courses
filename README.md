@@ -265,3 +265,8 @@ urltpatterns = [path("/hello-view", views.HelloApiView.as_view())]
 
 De esta manera, cada vez que accedamos a api/endpoint, el archivo urls.py de nuestro proyecto, vera que para ese path, tiene un include asignado, en este caso el archivo urls.py de nuestra app.
 Por lo cual, cada vez que accedamos a api/endpoint lo que hara el archivo es enviarlo directamente al archivo urls.py de la app y ejecutar la funcion asignada a ese endpoint
+
+## Serializer
+
+Es una feature del framework djangorest que nos permite convertir facilmente de inputs de datos a objetos de python y viceversa.
+Es una buena practica tener 1 solo archivo serializer para toda la app
