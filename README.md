@@ -270,3 +270,19 @@ Por lo cual, cada vez que accedamos a api/endpoint lo que hara el archivo es env
 
 Es una feature del framework djangorest que nos permite convertir facilmente de inputs de datos a objetos de python y viceversa.
 Es una buena practica tener 1 solo archivo serializer para toda la app
+
+## ViewSet
+
+Como las APIViews, nos permiten escribir logica para nuestros endpoints. Sin embargo, en lugar de definir funciones cuya definicion coincida con el metodo HTTP utiliza operaciones del modelo para las funciones
+
+- Se encarga de ejecutar logica como el APIView.
+- Es perfecto para las operaciones estandar con la BD
+- Es la manera mas rapida de crear una interfaz de la BD
+
+**Casos de uso**
+:
+
+- Una simple interfaz CRUD con la BD
+- Una API rapida y simple
+- Si no necesita customizacion en la logica, utilizamos los dispuestos por Django RestFramework
+- Si la aplicacion trabaja con estructuras de datos estandar
