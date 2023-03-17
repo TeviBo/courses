@@ -43,6 +43,8 @@ Profiles REST API course code
 
 > Crea la app para nuestro ***profiles_project***
 
+La estructura de django es: root/project_name contendra todos los archivos base del proyecto, como ser **settings**, **urls** y **wsgi**. Luego, pueden existir n apps por projecto y siempre su nomenclatura es <project_name>/appname. En este caso **profiles_projects** es nuestro directorio de proyecto y nuestra app es **profiles_api**, que como se puede apreciar, primero contiene el nombre del projecto y luego el de la app
+
 ### Se nos creara el siguiente directorio que contendra la app
 
 ![app init](readme_imgs\django_app_script.py.png)
@@ -55,7 +57,7 @@ Profiles REST API course code
 
 --------------------
 
-## Settings.py
+## Settings
 
 Archivo de configuracion de nuestro proyecto.
 Dentro, podemos encontrar un array denominado ***INSTALLED_APPS***, que contendra todas las aplicaciones que utilizara nuestro projecto.
@@ -84,3 +86,109 @@ Comenzaremos activando algunas apps que necesitaremos para este proyecto:
 
 **profiles_api**
 : por ultimo agregamos nuestra aplicacion.
+
+### Como setear un modelo custom
+
+Dentro de nuestro archivo settings.py, agregamos la siguiente linea
+
+```py
+    AUTH_USER_MODEL = 'profiles_api.UserProfile
+```
+
+Le especificamos a django que el modelo contenido dentro de profiles_api, sera el modelo que utilizara para la autenticacion y registros de toda la app.
+
+De esta manera se configura un modelo en django
+
+--------------------
+
+## Models
+
+--------------------
+
+En este archivo se crean los modelos que utilizara nuestra aplicacion.
+
+```py
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,PermissionsMixin)
+from django.db import models
+
+
+class UserProfileManager(BaseUserManager):
+    """
+        Manager for user profiles
+    """
+    def create_user(self, email, name, password=None):
+        if not email:
+            raise ValueError('User must have an email address')
+        email = self.normalize_email(email)
+        user = self.model(email=email, name=name)
+
+        # This method is inherited from AbstractBaseUser class and it hash the password
+        user.set_password(password)
+
+        user.save(using=self._db)
+
+        return user
+
+    def create_superuser(self, email, name, password):
+        user = self.create_user(email, name, password)
+        user.is_superuser = True
+        user.is_staff = True
+        user.save(using=self._db)
+        return user
+
+
+class UserProfile(AbstractBaseUser, PermissionsMixin):
+    """
+        Database model for users in the system
+    """
+    email = models.EmailField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    objects = UserProfileManager()
+
+    # Cuando se autentiquen, mediante este metodo indicamos que en lugar de utilizar el nombre de la
+    # persona, utilizara el campo email como usuario
+    USERNAME_FIELD = 'email'
+
+    REQUIRED_FIELDS = ['name']
+
+    def get_full_name(self):
+        """
+            Retrieve full name of user
+        """
+        return self.name
+
+    def get_short_name(self):
+        """
+            Retrieves short name of the user
+        """
+        return self.name
+
+    def __str__(self):
+        """
+            Return string representation of our user
+        """
+        return self.email
+
+```
+
+## Migrations
+
+La manera en la que django maneja la base de datos es creando un archivo *migration* que contenga todos los pasos requeridos para que nuestra base de datos matchee con nuestros modelos. Por lo cual, cada vez que creamos o modificamos un modelo, debemos crear o actualizar el archivo migration
+
+Serian como nuestro ORM.
+
+El siguiente comando creara por nosotros los migrations para los modelos de nuestra app
+:
+
+```sh
+    python manage.py makemigrations profiles_api
+```
+
+Para correr todos los migrations de nuestro proyecto utilizamos el siguiente comando:
+
+```sh
+    python manage.py migrate
+```
