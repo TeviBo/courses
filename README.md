@@ -234,6 +234,46 @@ Casos de uso:
 - Cuando necesitamos llamar a otras APIs/servicios
 - Cuando necesitamos acceder a archivos del projecto
 
+```py
+class HelloApiView(APIView):
+    """API View"""
+
+    serializer_class = serializers.HelloSerializer
+
+    def get(self, request, format=None):
+        """Returns a list of APIView features"""
+        an_apiview = [
+            "Uses HTTP methods as function (get, post, patch, put, delete)",
+            "Is similar to a traditional Django View",
+            "Gives you the most control over your application logic",
+            "Is mapped manually to URLs",
+        ]
+
+        return Response({"message": "success", "an_apiview": an_apiview})
+
+    def post(self, request):
+        """Create a hello message with our name"""
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.validated_data.get("name")
+            message = f"Hello {name}"
+            return Response({"message": message})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pl=None):
+        """Handle updating an object"""
+        return Response({"method": "PUT"})
+
+    def patch(self, request, pk=None):
+        """Handle a partial update of an object"""
+        return Response({"method": "PATCH"})
+
+    def delete(self, request, pk=None):
+        """Delete an object"""
+        return Response({"method": "DELETE"})
+```
+
 ### APIView route
 
 Creamos un nuevo archivo en nuestra app (**NO EN EL PROYECTO**) denominado, en este caso, urls.py
@@ -271,6 +311,57 @@ Por lo cual, cada vez que accedamos a api/endpoint lo que hara el archivo es env
 Es una feature del framework djangorest que nos permite convertir facilmente de inputs de datos a objetos de python y viceversa.
 Es una buena practica tener 1 solo archivo serializer para toda la app
 
+```py
+from rest_framework import serializers
+
+
+class HelloSerializer(serializers.Serializer):
+    """Serializes a name field for testing our APIView"""
+
+    name = serializers.CharField(max_length=10)
+```
+
+### Model Serializer
+
+Tiene algunas funciones mas y nos permite trabajar facilmente con los modelos de la BD
+
+```py
+class UserProfileSerializer(serializers.ModelSerializer):
+    """Serializes a user profile object"""
+
+    # Levanta el serializer apuntando a nuestro modelo
+    class Meta:
+        model = models.UserProfile
+        # Definimos los campos que haremos accesibles en el modelo
+        fields = ("id", "email", "name", "password")
+        """
+        Declaramos argumentos extra para que la pass
+        no sea de tipo lectura de manera que no sea devuelta en algun metodo retrieve,
+        luego seteamos el estilo a password para que
+        se muestre como puntitos en el navegador
+        """
+        extra_kwargs = {
+            "password": {"write_only": True, "style": {"input_type": "password"}}
+        }
+
+    def create(self, validated_data):
+        """Create and return a new user"""
+        user = models.UserProfile.objects.create_user(
+            email=validated_data["email"],
+            name=validated_data["name"],
+            password=validated_data["password"],
+        )
+        return user
+
+    def update(self, instance, validated_data):
+        """Handle updating user account"""
+        if 'password' in validated_data:
+            password = validated_data.pop('password')
+            instance.set_password(password)
+
+        return super().update(instance, validated_data)
+```
+
 ## ViewSet
 
 Como las APIViews, nos permiten escribir logica para nuestros endpoints. Sin embargo, en lugar de definir funciones cuya definicion coincida con el metodo HTTP utiliza operaciones del modelo para las funciones
@@ -286,3 +377,50 @@ Como las APIViews, nos permiten escribir logica para nuestros endpoints. Sin emb
 - Una API rapida y simple
 - Si no necesita customizacion en la logica, utilizamos los dispuestos por Django RestFramework
 - Si la aplicacion trabaja con estructuras de datos estandar
+
+```py
+class HelloViewSet(viewsets.ViewSet):
+    """Test API ViewSet"""
+
+    serializer_class = serializers.HelloSerializer
+
+    def list(self, request):
+        """Return a hello messaage"""
+        a_viewset = [
+            "Uses actions (list, create, retrievce, update, partial_update)",
+            "Automatically maps to URLs using Routers",
+            "Provides more functionality with less code",
+        ]
+
+        return Response({"message": "success", "a_viewset": a_viewset})
+
+    def create(self, request):
+        """Create a new hello message"""
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.validated_data.get("name")
+            message = f"Hello {name}"
+            return Response({"message": message})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk=None):
+        """Handle getting an object by its ID"""
+        return Response({"method": "GET"})
+
+    def update(self, request, pk=None):
+        """Handle updating an object by its ID"""
+        return Response({"method": "PUT"})
+
+    def partial_update(self, request, pk=None):
+        """Handle update part of an object by its ID"""
+        return Response({"method": "PATCH"})
+
+    def destroy(self, request, pk=None):
+        """Handle removing object"""
+        return Response({"method": "DELETE"})
+```
+
+### Models ViewSet
+
+Diseñado especificamente para manejar modelos, agrega mas funcionalidades que el anterior
