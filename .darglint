@@ -1,0 +1,39 @@
+[message]
+# La plantilla de mensaje que se muestra para cada error de estilo
+template: "{msg_id}: {msg} ({symbol}) at line {line}"
+# La línea de ancho del bloque de mensaje
+width: 120
+# El estilo de mensaje: 'long', 'short' o 'default'
+style: default
+
+[style]
+# La cadena de anulación para una línea en blanco de estilo docstring.
+no_blank_lines_after_class: False
+# La cadena de anulación para una línea en blanco después de un encabezado de sección.
+no_blank_lines_after_section: False
+# El estilo de la primera línea: 'implicit', 'numpy' o 'google'.
+first_line: implicit
+# El estilo de los encabezados de sección: 'numpy' o 'google'.
+section_header: numpy
+
+[google]
+# El estilo de la primera línea: 'short', 'long' o 'full'.
+first_line_style: long
+# El estilo de la última línea: 'short' o 'long'.
+last_line_style: short
+# Los nombres de los parámetros en la función deben estar en la lista de los parámetros de la función.
+match_arg_params: False
+# El estilo para los parámetros de la función: 'numpy' o 'google'.
+param_style: numpy
+# El estilo para los tipos de retorno de la función: 'numpy' o 'google'.
+return_style: numpy
+
+[numpy]
+# El estilo de la primera línea: 'short' o 'long'.
+first_line_style: short
+# El estilo de la última línea: 'short' o 'long'.
+last_line_style: short
+# La cadena que separa el tipo de retorno del nombre de la función.
+return_annotation_separator: ' -> '
+# La cadena que separa los elementos de una lista o tupla en el tipo de retorno.
+return_multiple_values_separator: ', '

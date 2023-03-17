@@ -1,0 +1,11 @@
+[flake8]
+max-line-length = 88
+exclude = .git,__pycache__,docs/source/conf.py,old,build,dist,migrations
+ignore = E203, W503
+select = C,E,F,W,B,B950
+application-import-names = profiles-rest-api
+import-order-style = google
+inline-quotes = single
+multiline-quotes = double
+docstring-convention = numpy
+darglint_config = .darglint

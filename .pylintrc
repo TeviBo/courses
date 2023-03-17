@@ -1,0 +1,5 @@
+[MASTER]
+disable = missing-docstring
+
+[MESSAGES CONTROL]
+disable = C0103
