@@ -467,3 +467,11 @@ Luego, lo que prosigue es ejecutar el script setup.sh que se encuentra dentro de
 curl es como un cliente http de linux, es para descargar apuntando a una url
 
 La s de -sL es para que se corra en solo mode (investigar) y la L para que haga follow redirect. Lo que sigue luego de **|** es para indicar que el output de esa descarga va a ser ejecutado en bash
+
+## Update del script en el server
+
+Para actualizar el servidor con los ultimos cambios, ejecutamos el siguiente comando
+
+```sh
+    sudo sh ./deploy/update.sh
+```
