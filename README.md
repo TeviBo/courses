@@ -35,7 +35,7 @@ Profiles REST API course code
 
 ### Se nos creara el siguiente proyecto
 
-![project init](readme_imgs\django_script_img.png)
+![project init](./readme_imgs/django_script_img.png)
 
 ```sh
     python manage.py startapp profiles_api
@@ -47,7 +47,7 @@ La estructura de django es: root/project_name contendra todos los archivos base 
 
 ### Se nos creara el siguiente directorio que contendra la app
 
-![app init](readme_imgs\django_app_script.py.png)
+![app init](./readme_imgs/django_app_script.py.png)
 
 ```sh
     python manage.py runserver 0.0.0.0:8000
