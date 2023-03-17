@@ -1,7 +1,7 @@
 
 # Profiles REST API
 
-Profiles REST API course code
+Profiles REST API course code + AWS
 
 --------------------
 
@@ -449,3 +449,21 @@ En este archivo esta el script que utilizaremos cuando nuestro server se cree po
 ### update.sh
 
 Una vez que el servidor ya se creo, debemos utilizar este archivo para pulear los cambios del repositorio
+
+Una vez que tenemos la instancia corriendo en nuestro EC2, debemos copiar la direccion DNS IPv4 y conectarnos mediante ssh al servidor.
+
+```sh
+    ssh ubuntu@ec2-3-144-249-68.us-east-2.compute.amazonaws.com
+```
+
+Lo que hace ese comando es conectarse a la maquina ubuntu, en la direccion dns brindada con el @
+
+Luego, lo que prosigue es ejecutar el script setup.sh que se encuentra dentro del folder deploy/
+
+```sh
+    curl -sL https://raw.githubusercontent.com/TeviBo/courses/main/deploy/setup.sh | sudo bash -
+```
+
+curl es como un cliente http de linux, es para descargar apuntando a una url
+
+La s de -sL es para que se corra en solo mode (investigar) y la L para que haga follow redirect. Lo que sigue luego de **|** es para indicar que el output de esa descarga va a ser ejecutado en bash
