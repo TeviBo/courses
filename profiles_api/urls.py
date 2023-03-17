@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from profiles_api import views
 
 router = DefaultRouter()
-router.register("hello-viewset", views.HelloViewSet)
+router.register("hello-viewset", views.HelloViewSet, base_name="hello-viewset")
 
 # No necesitamos establecer un nombre porque Django lo resuelve tomando el del modelo
 router.register("profile", views.UserProfileViewSet)
