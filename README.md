@@ -221,4 +221,47 @@ Dentro de admin.py, debemos agregar la siguiente linea dependiendo la cantidad d
 
 --------------------
 
-## Como testear nuestra app
+# Info
+
+## APIView
+
+Aqui se describe la logica de nuestro endpoint
+
+Casos de uso:
+
+- Cuando necesitas full control de la logica de tu aplicacion
+- Cuando procesas archivos y renderizando una respuestra sincrona
+- Cuando necesitamos llamar a otras APIs/servicios
+- Cuando necesitamos acceder a archivos del projecto
+
+### APIView route
+
+Creamos un nuevo archivo en nuestra app (**NO EN EL PROYECTO**) denominado, en este caso, urls.py
+
+En el archivo urls.py del proyecto, agregamos el import include para poder utilizar el archivo urls.py de nuestra aplicacion y luego procedemos a agregar otro elemento al array **url_patterns**. Indicando el 'home' de la ruta y como segundo parametro, utilizamos el metodo include al cual le enviamos por parametro el archivo que utilizaremos para esa ruta.
+
+Quedara algo como lo siguiente
+
+```py
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("api/", include("profiles_api.urls")),
+]
+```
+
+Luego en el archivo urls.py de nuestra app, agregaremos el siguiente codigo y quedara similar al archivo de nuestro proyecto
+
+```py
+from django.urls import path
+
+from profiles_api import views
+
+urltpatterns = [path("/hello-view", views.HelloApiView.as_view())]
+
+```
+
+De esta manera, cada vez que accedamos a api/endpoint, el archivo urls.py de nuestro proyecto, vera que para ese path, tiene un include asignado, en este caso el archivo urls.py de nuestra app.
+Por lo cual, cada vez que accedamos a api/endpoint lo que hara el archivo es enviarlo directamente al archivo urls.py de la app y ejecutar la funcion asignada a ese endpoint
