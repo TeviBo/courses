@@ -439,3 +439,13 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         "email",
     )
 ```
+
+## Deployment script and configs
+
+### setup.sh
+
+En este archivo esta el script que utilizaremos cuando nuestro server se cree por primera vez.
+
+### update.sh
+
+Una vez que el servidor ya se creo, debemos utilizar este archivo para pulear los cambios del repositorio
